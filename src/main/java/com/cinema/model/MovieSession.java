@@ -27,7 +27,6 @@ public class MovieSession {
     private Movie movie;
     @ManyToOne
     @NonNull
-    @Column(name = "cinema_hall")
     private CinemaHall cinemaHall;
     @NonNull
     @Column(name = "show_time")

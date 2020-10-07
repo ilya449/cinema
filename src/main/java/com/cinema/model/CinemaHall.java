@@ -20,7 +20,7 @@ public class CinemaHall {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NonNull
-    private int capacity;
+    private Integer capacity;
     @NonNull
     private String description;
 }

@@ -1,12 +1,16 @@
 package com.cinema;
 
+import com.cinema.exception.AuthenticationException;
 import com.cinema.lib.Injector;
 import com.cinema.model.CinemaHall;
 import com.cinema.model.Movie;
 import com.cinema.model.MovieSession;
+import com.cinema.model.User;
+import com.cinema.service.AuthenticationService;
 import com.cinema.service.CinemaHallService;
 import com.cinema.service.MovieService;
 import com.cinema.service.MovieSessionService;
+import com.cinema.service.UserService;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -14,7 +18,7 @@ import java.time.LocalTime;
 public class Main {
     private static Injector injector = Injector.getInstance("com.cinema");
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws AuthenticationException {
         Movie firstMovie = new Movie();
         firstMovie.setTitle("Fast and Furious");
         firstMovie.setDescription("18+");
@@ -60,5 +64,30 @@ public class Main {
         System.out.println("\nToday movie sessions for movie: " + secondMovie);
         System.out.println(movieSessionService
                 .findAvailableSessions(secondMovie.getId(), LocalDate.now()));
+
+        UserService userService = (UserService) injector.getInstance(UserService.class);
+
+        User userBob = new User();
+        userBob.setEmail("bob@gmail.com");
+        userBob.setPassword("bob's_Pass");
+        userService.add(userBob);
+
+        User userAlice = new User();
+        userAlice.setEmail("alice@gmail.com");
+        userAlice.setPassword("alice's_pass");
+        userService.add(userAlice);
+
+        System.out.println("User by email: " + userBob.getEmail());
+        System.out.println(userService.findByEmail("bob@gmail.com"));
+
+        AuthenticationService authenticationService =
+                (AuthenticationService) injector.getInstance(AuthenticationService.class);
+
+        User registeredUser = authenticationService
+                .register("newUserEmail@mail.com", "!pass_*_pass!");
+
+        System.out.println("Trying to login user:");
+        System.out.println(authenticationService
+                .login(registeredUser.getEmail(), "!pass_*_pass!"));
     }
 }

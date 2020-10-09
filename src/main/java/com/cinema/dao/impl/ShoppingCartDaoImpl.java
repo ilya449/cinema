@@ -6,6 +6,7 @@ import com.cinema.lib.Dao;
 import com.cinema.model.ShoppingCart;
 import com.cinema.model.User;
 import com.cinema.util.HibernateUtil;
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
@@ -40,7 +41,9 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             Query<ShoppingCart> query = session.createQuery("FROM ShoppingCart "
                     + "WHERE id = :userId ", ShoppingCart.class);
             query.setParameter("userId", user.getId());
-            return query.getSingleResult();
+            ShoppingCart cart = query.getSingleResult();
+            Hibernate.initialize(cart.getTickets());
+            return cart;
         } catch (Exception e) {
             throw new DataProcessingException("Couldn't get shopping cart of user: " + user, e);
         }

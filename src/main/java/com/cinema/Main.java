@@ -91,7 +91,7 @@ public class Main {
         User registeredUser = authenticationService
                 .register("newUserEmail@mail.com", "!pass_*_pass!");
 
-        logger.info("Trying to login user:");
+        logger.info("Logging in user:");
         logger.info(authenticationService
                 .login(registeredUser.getEmail(), "!pass_*_pass!"));
 

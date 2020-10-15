@@ -5,11 +5,13 @@ import com.cinema.lib.Injector;
 import com.cinema.model.CinemaHall;
 import com.cinema.model.Movie;
 import com.cinema.model.MovieSession;
+import com.cinema.model.ShoppingCart;
 import com.cinema.model.User;
 import com.cinema.service.AuthenticationService;
 import com.cinema.service.CinemaHallService;
 import com.cinema.service.MovieService;
 import com.cinema.service.MovieSessionService;
+import com.cinema.service.OrderService;
 import com.cinema.service.ShoppingCartService;
 import com.cinema.service.UserService;
 import java.time.LocalDate;
@@ -101,5 +103,15 @@ public class Main {
         shoppingCartService.clear(shoppingCartService.getByUser(executedRegisteredUser));
         System.out.println("New user's shopping cart after clearing: ");
         System.out.println(shoppingCartService.getByUser(executedRegisteredUser));
+
+        shoppingCartService.addSession(todayMorningSession, executedRegisteredUser);
+        shoppingCartService.addSession(todayEveningSession, executedRegisteredUser);
+        ShoppingCart cart = shoppingCartService.getByUser(executedRegisteredUser);
+        OrderService orderService =
+                (OrderService) injector.getInstance(OrderService.class);
+        System.out.println("Completed order:");
+        System.out.println(orderService.completeOrder(cart.getTickets(), cart.getUser()));
+        System.out.println("Order history for user: " + cart.getUser());
+        System.out.println(orderService.getOrderHistory(cart.getUser()));
     }
 }

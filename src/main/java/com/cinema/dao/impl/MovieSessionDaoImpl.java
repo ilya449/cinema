@@ -16,7 +16,7 @@ import org.hibernate.query.Query;
 
 @Dao
 public class MovieSessionDaoImpl implements MovieSessionDao {
-    private static final Logger logger = Logger.getLogger(Main.class);
+    private static final Logger logger = Logger.getLogger(MovieSessionDaoImpl.class);
 
     @Override
     public MovieSession add(MovieSession movieSession) {

@@ -1,7 +1,7 @@
 package com.cinema;
 
+import com.cinema.config.AppConfig;
 import com.cinema.exception.AuthenticationException;
-import com.cinema.lib.Injector;
 import com.cinema.model.CinemaHall;
 import com.cinema.model.Movie;
 import com.cinema.model.MovieSession;
@@ -18,10 +18,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import org.apache.log4j.Logger;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class Main {
     private static final Logger logger = Logger.getLogger(Main.class);
-    private static Injector injector = Injector.getInstance("com.cinema");
 
     public static void main(String[] args) throws AuthenticationException {
         Movie firstMovie = new Movie();
@@ -32,7 +32,11 @@ public class Main {
         secondMovie.setTitle("How to Train Your Dragon");
         secondMovie.setDescription("Cartoon");
 
-        MovieService movieService = (MovieService) injector.getInstance(MovieService.class);
+        AnnotationConfigApplicationContext context
+                = new AnnotationConfigApplicationContext(AppConfig.class);
+
+        MovieService movieService = context.getBean(MovieService.class);
+
         movieService.add(firstMovie);
         movieService.add(secondMovie);
         logger.info("Created movies:");
@@ -40,16 +44,14 @@ public class Main {
 
         CinemaHall redHall = new CinemaHall(50, "red hall");
         CinemaHall vipHall = new CinemaHall(10, "vip hall");
-        CinemaHallService cinemaHallService
-                = (CinemaHallService) injector.getInstance(CinemaHallService.class);
+        CinemaHallService cinemaHallService = context.getBean(CinemaHallService.class);
 
         cinemaHallService.add(redHall);
         cinemaHallService.add(vipHall);
         logger.info("Created cinema halls:");
         cinemaHallService.getAll().forEach(logger::info);
 
-        MovieSessionService movieSessionService
-                = (MovieSessionService) injector.getInstance(MovieSessionService.class);
+        MovieSessionService movieSessionService = context.getBean(MovieSessionService.class);
 
         MovieSession todayMorningSession = new MovieSession(secondMovie, redHall,
                 LocalDateTime.now());
@@ -70,7 +72,7 @@ public class Main {
         logger.info(movieSessionService
                 .findAvailableSessions(secondMovie.getId(), LocalDate.now()));
 
-        UserService userService = (UserService) injector.getInstance(UserService.class);
+        UserService userService = context.getBean(UserService.class);
 
         User userBob = new User();
         userBob.setEmail("bob@gmail.com");
@@ -85,8 +87,8 @@ public class Main {
         logger.info("User by email: " + userBob.getEmail());
         logger.info(userService.findByEmail("bob@gmail.com"));
 
-        AuthenticationService authenticationService =
-                (AuthenticationService) injector.getInstance(AuthenticationService.class);
+        AuthenticationService authenticationService
+                = context.getBean(AuthenticationService.class);
 
         User registeredUser = authenticationService
                 .register("newUserEmail@mail.com", "!pass_*_pass!");
@@ -95,8 +97,7 @@ public class Main {
         logger.info(authenticationService
                 .login(registeredUser.getEmail(), "!pass_*_pass!"));
 
-        ShoppingCartService shoppingCartService =
-                (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
+        ShoppingCartService shoppingCartService = context.getBean(ShoppingCartService.class);
         User executedRegisteredUser = userService.findByEmail("newUserEmail@mail.com").get();
         shoppingCartService.addSession(todayMorningSession, executedRegisteredUser);
         shoppingCartService.addSession(todayEveningSession, executedRegisteredUser);
@@ -109,8 +110,7 @@ public class Main {
         shoppingCartService.addSession(todayMorningSession, executedRegisteredUser);
         shoppingCartService.addSession(todayEveningSession, executedRegisteredUser);
         ShoppingCart cart = shoppingCartService.getByUser(executedRegisteredUser);
-        OrderService orderService =
-                (OrderService) injector.getInstance(OrderService.class);
+        OrderService orderService = context.getBean(OrderService.class);
         logger.info("Completed order:");
         logger.info(orderService.completeOrder(cart.getTickets(), cart.getUser()));
         logger.info("Order history for user: " + cart.getUser());

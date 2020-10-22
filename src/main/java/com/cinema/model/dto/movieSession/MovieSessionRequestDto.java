@@ -1,11 +1,10 @@
-package com.cinema.model.dto;
+package com.cinema.model.dto.movieSession;
 
 import lombok.Data;
 
 @Data
-public class MovieSessionResponseDto {
+public class MovieSessionRequestDto {
     private Long movieId;
     private Long cinemaHallId;
-    private String movieTitle;
     private String showTime;
 }

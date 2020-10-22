@@ -1,4 +1,4 @@
-package com.cinema.model.dto;
+package com.cinema.model.dto.movieSession;
 
 import com.cinema.model.MovieSession;
 import com.cinema.service.CinemaHallService;
@@ -25,7 +25,7 @@ public class MovieSessionDtoMapper {
         return movieSession;
     }
 
-    public MovieSessionResponseDto getResponseDto(MovieSession movieSession){
+    public MovieSessionResponseDto getMovieSessionResponseDto(MovieSession movieSession){
         MovieSessionResponseDto dto = new MovieSessionResponseDto();
         dto.setCinemaHallId(movieSession.getCinemaHall().getId());
         dto.setMovieId(movieSession.getMovie().getId());

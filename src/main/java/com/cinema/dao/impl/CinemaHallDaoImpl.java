@@ -4,8 +4,6 @@ import com.cinema.dao.CinemaHallDao;
 import com.cinema.exception.DataProcessingException;
 import com.cinema.model.CinemaHall;
 import java.util.List;
-
-import com.cinema.model.Movie;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

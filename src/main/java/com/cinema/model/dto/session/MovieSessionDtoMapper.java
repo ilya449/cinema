@@ -1,11 +1,11 @@
-package com.cinema.model.dto.movieSession;
+package com.cinema.model.dto.session;
 
 import com.cinema.model.MovieSession;
 import com.cinema.service.CinemaHallService;
 import com.cinema.service.MovieService;
-import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import org.springframework.stereotype.Component;
 
 @Component
 public class MovieSessionDtoMapper {
@@ -17,7 +17,7 @@ public class MovieSessionDtoMapper {
         this.cinemaHallService = cinemaHallService;
     }
 
-    public MovieSession getMovieSession(MovieSessionRequestDto dto){
+    public MovieSession getMovieSession(MovieSessionRequestDto dto) {
         MovieSession movieSession = new MovieSession();
         movieSession.setMovie(movieService.get(dto.getMovieId()));
         movieSession.setCinemaHall(cinemaHallService.get(dto.getCinemaHallId()));
@@ -25,7 +25,7 @@ public class MovieSessionDtoMapper {
         return movieSession;
     }
 
-    public MovieSessionResponseDto getMovieSessionResponseDto(MovieSession movieSession){
+    public MovieSessionResponseDto getMovieSessionResponseDto(MovieSession movieSession) {
         MovieSessionResponseDto dto = new MovieSessionResponseDto();
         dto.setCinemaHallId(movieSession.getCinemaHall().getId());
         dto.setMovieId(movieSession.getMovie().getId());

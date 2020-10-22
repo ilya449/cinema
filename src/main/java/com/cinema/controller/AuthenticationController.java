@@ -16,7 +16,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/registration")
-    public RedirectView registerUser(@RequestBody UserRegistrationRequestDto dto){
+    public RedirectView registerUser(@RequestBody UserRegistrationRequestDto dto) {
         authenticationService.register(dto.getEmail(), dto.getPassword());
         return new RedirectView("/hello");
     }

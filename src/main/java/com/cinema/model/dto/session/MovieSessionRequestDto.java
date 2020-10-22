@@ -1,4 +1,4 @@
-package com.cinema.model.dto.movieSession;
+package com.cinema.model.dto.session;
 
 import lombok.Data;
 

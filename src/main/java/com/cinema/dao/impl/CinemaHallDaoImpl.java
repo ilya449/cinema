@@ -4,6 +4,8 @@ import com.cinema.dao.CinemaHallDao;
 import com.cinema.exception.DataProcessingException;
 import com.cinema.model.CinemaHall;
 import java.util.List;
+
+import com.cinema.model.Movie;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -51,6 +53,14 @@ public class CinemaHallDaoImpl implements CinemaHallDao {
             Query<CinemaHall> cinemaHallQuery
                     = session.createQuery("from CinemaHall", CinemaHall.class);
             return cinemaHallQuery.getResultList();
+        }
+    }
+
+    @Override
+    public CinemaHall get(Long id) {
+        logger.info("Trying to get Cinema Hall with id: " + id);
+        try (Session session = sessionFactory.openSession()) {
+            return session.get(CinemaHall.class, id);
         }
     }
 }

@@ -53,4 +53,12 @@ public class MovieDaoImpl implements MovieDao {
             return getAllMoviesQuery.getResultList();
         }
     }
+
+    @Override
+    public Movie get(Long id) {
+        logger.info("Trying to get Movie with id: " + id);
+        try (Session session = sessionFactory.openSession()) {
+            return session.get(Movie.class, id);
+        }
+    }
 }

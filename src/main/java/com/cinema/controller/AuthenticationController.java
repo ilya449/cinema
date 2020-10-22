@@ -1,6 +1,5 @@
 package com.cinema.controller;
 
-import com.cinema.exception.AuthenticationException;
 import com.cinema.model.dto.UserRegistrationRequestDto;
 import com.cinema.service.AuthenticationService;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,15 +16,8 @@ public class AuthenticationController {
     }
 
     @PostMapping("/registration")
-    private RedirectView registerUser(@RequestBody UserRegistrationRequestDto dto){
+    public RedirectView registerUser(@RequestBody UserRegistrationRequestDto dto){
         authenticationService.register(dto.getEmail(), dto.getPassword());
-        return new RedirectView("/hello");
-    }
-
-    @PostMapping("/registration")
-    private RedirectView authenticateUser(@RequestBody UserRegistrationRequestDto dto)
-            throws AuthenticationException {
-        authenticationService.login(dto.getEmail(), dto.getPassword());
         return new RedirectView("/hello");
     }
 }

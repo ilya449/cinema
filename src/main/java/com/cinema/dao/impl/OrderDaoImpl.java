@@ -2,18 +2,24 @@ package com.cinema.dao.impl;
 
 import com.cinema.dao.OrderDao;
 import com.cinema.exception.DataProcessingException;
-import com.cinema.lib.Dao;
 import com.cinema.model.Order;
 import com.cinema.model.User;
-import com.cinema.util.HibernateUtil;
 import java.util.List;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.springframework.stereotype.Repository;
 
-@Dao
+@Repository
 public class OrderDaoImpl implements OrderDao {
     private static final Logger logger = Logger.getLogger(OrderDaoImpl.class);
+
+    private final SessionFactory sessionFactory;
+
+    public OrderDaoImpl(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
 
     @Override
     public Order add(Order order) {
@@ -21,7 +27,7 @@ public class OrderDaoImpl implements OrderDao {
         Session session = null;
         logger.info("Creating order: " + order);
         try {
-            session = HibernateUtil.getSessionFactory().openSession();
+            session = sessionFactory.openSession();
             transaction = session.beginTransaction();
             session.save(order);
             transaction.commit();
@@ -42,7 +48,7 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public List<Order> getOrderHistory(User user) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try (Session session = sessionFactory.openSession()) {
             return session.createQuery("from Order o "
                     + "join fetch o.tickets "
                     + "join fetch o.user "

@@ -2,16 +2,22 @@ package com.cinema.dao.impl;
 
 import com.cinema.dao.TicketDao;
 import com.cinema.exception.DataProcessingException;
-import com.cinema.lib.Dao;
 import com.cinema.model.Ticket;
-import com.cinema.util.HibernateUtil;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.springframework.stereotype.Repository;
 
-@Dao
+@Repository
 public class TicketDaoImpl implements TicketDao {
     private static final Logger logger = Logger.getLogger(TicketDaoImpl.class);
+
+    private final SessionFactory sessionFactory;
+
+    public TicketDaoImpl(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
 
     @Override
     public Ticket add(Ticket ticket) {
@@ -19,7 +25,7 @@ public class TicketDaoImpl implements TicketDao {
         Session session = null;
         logger.info("Creating ticket: " + ticket);
         try {
-            session = HibernateUtil.getSessionFactory().openSession();
+            session = sessionFactory.openSession();
             transaction = session.beginTransaction();
             session.persist(ticket);
             transaction.commit();

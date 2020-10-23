@@ -29,6 +29,7 @@ public class MovieSessionDtoMapper {
         MovieSessionResponseDto dto = new MovieSessionResponseDto();
         dto.setCinemaHallId(movieSession.getCinemaHall().getId());
         dto.setMovieId(movieSession.getMovie().getId());
+        dto.setMovieSessionId(movieSession.getId());
         dto.setMovieTitle(movieSession.getMovie().getTitle());
         dto.setShowTime(movieSession.getShowTime().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
         return dto;

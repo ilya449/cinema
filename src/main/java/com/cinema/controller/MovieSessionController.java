@@ -7,12 +7,13 @@ import com.cinema.service.MovieSessionService;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.view.RedirectView;
 
 @RestController
 @RequestMapping("/movie-sessions")
@@ -27,14 +28,17 @@ public class MovieSessionController {
     }
 
     @PostMapping
-    public RedirectView addMovieSession(@RequestBody MovieSessionRequestDto dto) {
+    public void addMovieSession(@RequestBody MovieSessionRequestDto dto) {
         movieSessionService.add(mapper.getMovieSession(dto));
-        return new RedirectView("/");
     }
 
     @GetMapping("/available")
-    public List<MovieSessionResponseDto> getAllMovieSessions(Long id, String date) {
-        return movieSessionService.findAvailableSessions(id, LocalDate.parse(date)).stream()
+    public List<MovieSessionResponseDto> getAllMovieSessions(@RequestParam Long id,
+                                                             @RequestParam
+                                                             @DateTimeFormat(pattern
+                                                                     = "dd.MM.yyyy")
+                                                                     LocalDate date) {
+        return movieSessionService.findAvailableSessions(id, date).stream()
                 .map(mapper::getMovieSessionResponseDto)
                 .collect(Collectors.toList());
     }

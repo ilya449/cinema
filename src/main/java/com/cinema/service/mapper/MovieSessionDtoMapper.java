@@ -1,6 +1,8 @@
-package com.cinema.model.dto.session;
+package com.cinema.service.mapper;
 
 import com.cinema.model.MovieSession;
+import com.cinema.model.dto.session.MovieSessionRequestDto;
+import com.cinema.model.dto.session.MovieSessionResponseDto;
 import com.cinema.service.CinemaHallService;
 import com.cinema.service.MovieService;
 import java.time.LocalDateTime;

@@ -1,9 +1,9 @@
 package com.cinema.controller;
 
-import com.cinema.model.dto.movie.MovieDtoMapper;
 import com.cinema.model.dto.movie.MovieRequestDto;
 import com.cinema.model.dto.movie.MovieResponseDto;
 import com.cinema.service.MovieService;
+import com.cinema.service.mapper.MovieDtoMapper;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.web.bind.annotation.GetMapping;

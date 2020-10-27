@@ -6,7 +6,7 @@ import com.cinema.model.dto.hall.CinemaHallResponseDto;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CinemaHallMapper {
+public class CinemaHallDtoMapper {
     public CinemaHall getCinemaHall(CinemaHallRequestDto dto) {
         CinemaHall cinemaHall = new CinemaHall();
         cinemaHall.setCapacity(dto.getCapacity());

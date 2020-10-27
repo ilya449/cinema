@@ -1,9 +1,9 @@
-package com.cinema.model.dto;
+package com.cinema.model.dto.user;
 
 import lombok.Data;
 
 @Data
-public class UserRegistrationRequestDto {
+public class UserRequestDto {
     private String email;
     private String password;
 }

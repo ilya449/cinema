@@ -5,16 +5,15 @@ import com.cinema.exception.DataProcessingException;
 import com.cinema.model.Order;
 import com.cinema.model.User;
 import java.util.List;
-import org.apache.log4j.Logger;
+import lombok.extern.log4j.Log4j;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
 
 @Repository
+@Log4j
 public class OrderDaoImpl implements OrderDao {
-    private static final Logger logger = Logger.getLogger(OrderDaoImpl.class);
-
     private final SessionFactory sessionFactory;
 
     public OrderDaoImpl(SessionFactory sessionFactory) {
@@ -25,16 +24,16 @@ public class OrderDaoImpl implements OrderDao {
     public Order add(Order order) {
         Transaction transaction = null;
         Session session = null;
-        logger.info("Creating order: " + order);
+        log.info("Creating order: " + order);
         try {
             session = sessionFactory.openSession();
             transaction = session.beginTransaction();
             session.save(order);
             transaction.commit();
-            logger.info("Order was created: " + order);
+            log.info("Order was created: " + order);
             return order;
         } catch (Exception e) {
-            logger.error("Can't create order: " + order + "\nerror: ", e);
+            log.error("Can't create order: " + order + "\nerror: ", e);
             if (transaction != null) {
                 transaction.rollback();
             }

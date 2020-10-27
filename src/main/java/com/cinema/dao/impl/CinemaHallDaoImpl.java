@@ -4,7 +4,7 @@ import com.cinema.dao.CinemaHallDao;
 import com.cinema.exception.DataProcessingException;
 import com.cinema.model.CinemaHall;
 import java.util.List;
-import org.apache.log4j.Logger;
+import lombok.extern.log4j.Log4j;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -12,8 +12,8 @@ import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
+@Log4j
 public class CinemaHallDaoImpl implements CinemaHallDao {
-    private static final Logger logger = Logger.getLogger(CinemaHallDaoImpl.class);
     private final SessionFactory sessionFactory;
 
     public CinemaHallDaoImpl(SessionFactory sessionFactory) {
@@ -24,16 +24,16 @@ public class CinemaHallDaoImpl implements CinemaHallDao {
     public CinemaHall add(CinemaHall cinemaHall) {
         Transaction transaction = null;
         Session session = null;
-        logger.info("Creating cinema hall: " + cinemaHall);
+        log.info("Creating cinema hall: " + cinemaHall);
         try {
             session = sessionFactory.openSession();
             transaction = session.beginTransaction();
             session.persist(cinemaHall);
             transaction.commit();
-            logger.info("Cinema hall was created: " + cinemaHall);
+            log.info("Cinema hall was created: " + cinemaHall);
             return cinemaHall;
         } catch (Exception e) {
-            logger.error("Can't create cinema hall: " + cinemaHall + "\nerror: ", e);
+            log.error("Can't create cinema hall: " + cinemaHall + "\nerror: ", e);
             if (transaction != null) {
                 transaction.rollback();
             }
@@ -56,7 +56,7 @@ public class CinemaHallDaoImpl implements CinemaHallDao {
 
     @Override
     public CinemaHall get(Long id) {
-        logger.info("Trying to get Cinema Hall with id: " + id);
+        log.info("Trying to get Cinema Hall with id: " + id);
         try (Session session = sessionFactory.openSession()) {
             return session.get(CinemaHall.class, id);
         }

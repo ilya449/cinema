@@ -17,12 +17,11 @@ import com.cinema.service.UserService;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import org.apache.log4j.Logger;
+import lombok.extern.log4j.Log4j;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+@Log4j
 public class Main {
-    private static final Logger logger = Logger.getLogger(Main.class);
-
     public static void main(String[] args) throws AuthenticationException {
         Movie firstMovie = new Movie();
         firstMovie.setTitle("Fast and Furious");
@@ -39,8 +38,8 @@ public class Main {
 
         movieService.add(firstMovie);
         movieService.add(secondMovie);
-        logger.info("Created movies:");
-        movieService.getAll().forEach(logger::info);
+        log.info("Created movies:");
+        movieService.getAll().forEach(log::info);
 
         CinemaHall redHall = new CinemaHall(50, "red hall");
         CinemaHall vipHall = new CinemaHall(10, "vip hall");
@@ -48,8 +47,8 @@ public class Main {
 
         cinemaHallService.add(redHall);
         cinemaHallService.add(vipHall);
-        logger.info("Created cinema halls:");
-        cinemaHallService.getAll().forEach(logger::info);
+        log.info("Created cinema halls:");
+        cinemaHallService.getAll().forEach(log::info);
 
         MovieSessionService movieSessionService = context.getBean(MovieSessionService.class);
 
@@ -64,12 +63,12 @@ public class Main {
         movieSessionService.add(todayEveningSession);
         movieSessionService.add(tomorrowSession);
 
-        logger.info("Today movie sessions for movie: " + firstMovie);
-        logger.info(movieSessionService
+        log.info("Today movie sessions for movie: " + firstMovie);
+        log.info(movieSessionService
                 .findAvailableSessions(firstMovie.getId(), LocalDate.now()));
 
-        logger.info("Today movie sessions for movie: " + secondMovie);
-        logger.info(movieSessionService
+        log.info("Today movie sessions for movie: " + secondMovie);
+        log.info(movieSessionService
                 .findAvailableSessions(secondMovie.getId(), LocalDate.now()));
 
         UserService userService = context.getBean(UserService.class);
@@ -84,8 +83,8 @@ public class Main {
         userAlice.setPassword("alice's_pass");
         userService.add(userAlice);
 
-        logger.info("User by email: " + userBob.getEmail());
-        logger.info(userService.findByEmail("bob@gmail.com"));
+        log.info("User by email: " + userBob.getEmail());
+        log.info(userService.findByEmail("bob@gmail.com"));
 
         AuthenticationService authenticationService
                 = context.getBean(AuthenticationService.class);
@@ -93,27 +92,27 @@ public class Main {
         User registeredUser = authenticationService
                 .register("newUserEmail@mail.com", "!pass_*_pass!");
 
-        logger.info("Logging in user:");
-        logger.info(authenticationService
+        log.info("Logging in user:");
+        log.info(authenticationService
                 .login(registeredUser.getEmail(), "!pass_*_pass!"));
 
         ShoppingCartService shoppingCartService = context.getBean(ShoppingCartService.class);
-        User executedRegisteredUser = userService.findByEmail("newUserEmail@mail.com").get();
+        User executedRegisteredUser = userService.findByEmail("newUserEmail@mail.com");
         shoppingCartService.addSession(todayMorningSession, executedRegisteredUser);
         shoppingCartService.addSession(todayEveningSession, executedRegisteredUser);
-        logger.info("Get new user's shopping cart: ");
-        logger.info(shoppingCartService.getByUser(executedRegisteredUser));
+        log.info("Get new user's shopping cart: ");
+        log.info(shoppingCartService.getByUser(executedRegisteredUser));
         shoppingCartService.clear(shoppingCartService.getByUser(executedRegisteredUser));
-        logger.info("New user's shopping cart after clearing: ");
-        logger.info(shoppingCartService.getByUser(executedRegisteredUser));
+        log.info("New user's shopping cart after clearing: ");
+        log.info(shoppingCartService.getByUser(executedRegisteredUser));
 
         shoppingCartService.addSession(todayMorningSession, executedRegisteredUser);
         shoppingCartService.addSession(todayEveningSession, executedRegisteredUser);
         ShoppingCart cart = shoppingCartService.getByUser(executedRegisteredUser);
         OrderService orderService = context.getBean(OrderService.class);
-        logger.info("Completed order:");
-        logger.info(orderService.completeOrder(cart.getTickets(), cart.getUser()));
-        logger.info("Order history for user: " + cart.getUser());
-        logger.info(orderService.getOrderHistory(cart.getUser()));
+        log.info("Completed order:");
+        log.info(orderService.completeOrder(cart.getTickets(), cart.getUser()));
+        log.info("Order history for user: " + cart.getUser());
+        log.info(orderService.getOrderHistory(cart.getUser()));
     }
 }

@@ -6,14 +6,12 @@ import com.cinema.service.AuthenticationService;
 import com.cinema.service.ShoppingCartService;
 import com.cinema.service.UserService;
 import com.cinema.util.HashUtil;
-import java.util.Optional;
-import org.apache.log4j.Logger;
+import lombok.extern.log4j.Log4j;
 import org.springframework.stereotype.Service;
 
 @Service
+@Log4j
 public class AuthenticationServiceImpl implements AuthenticationService {
-    private static final Logger logger = Logger.getLogger(AuthenticationServiceImpl.class);
-
     private final UserService userService;
     private final ShoppingCartService shoppingCartService;
 
@@ -25,10 +23,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        Optional<User> user = userService.findByEmail(email);
-        if (user.isPresent() && isPassValid(password, user.get())) {
-            logger.info("User logged: " + user.get());
-            return user.get();
+        User user = userService.findByEmail(email);
+        if (user != null && isPassValid(password, user)) {
+            log.info("User logged: " + user);
+            return user;
         }
         throw new AuthenticationException("Incorrect user email or password");
     }
@@ -37,7 +35,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public User register(String email, String password) {
         User user = new User(email, password);
         shoppingCartService.registerNewShoppingCart(userService.add(user));
-        logger.info("New user was registered: " + user);
+        log.info("New user was registered: " + user);
         return user;
     }
 

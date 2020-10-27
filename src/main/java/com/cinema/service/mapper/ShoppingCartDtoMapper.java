@@ -9,13 +9,14 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ShoppingCartDtoMapper {
-    public ShoppingCartResponseDto mapToShoppingCartResponseDto(ShoppingCart shoppingCart) {
-        ShoppingCartResponseDto responseDto = new ShoppingCartResponseDto();
+    public ShoppingCartResponseDto getShoppingCartResponseDto(ShoppingCart shoppingCart) {
+        ShoppingCartResponseDto dto = new ShoppingCartResponseDto();
         List<Long> ticketIds = shoppingCart.getTickets().stream()
                 .map(Ticket::getId)
                 .collect(Collectors.toList());
-        responseDto.setId(shoppingCart.getId());
-        responseDto.setTicketsIds(ticketIds);
-        return responseDto;
+        dto.setId(shoppingCart.getId());
+        dto.setUserId(shoppingCart.getUser().getId());
+        dto.setTicketsIds(ticketIds);
+        return dto;
     }
 }

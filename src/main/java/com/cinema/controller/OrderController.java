@@ -32,7 +32,7 @@ public class OrderController {
     }
 
     @PostMapping
-    public void addOrder(@RequestBody Long userId) {
+    public void completeOrder(@RequestBody Long userId) {
         User user = userService.get(userId);
         orderService.completeOrder(shoppingCartService.getByUser(user).getTickets(), user);
     }

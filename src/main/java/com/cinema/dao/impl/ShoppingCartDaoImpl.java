@@ -4,7 +4,7 @@ import com.cinema.dao.ShoppingCartDao;
 import com.cinema.exception.DataProcessingException;
 import com.cinema.model.ShoppingCart;
 import com.cinema.model.User;
-import org.apache.log4j.Logger;
+import lombok.extern.log4j.Log4j;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -13,9 +13,8 @@ import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
+@Log4j
 public class ShoppingCartDaoImpl implements ShoppingCartDao {
-    private static final Logger logger = Logger.getLogger(ShoppingCartDaoImpl.class);
-
     private final SessionFactory sessionFactory;
 
     public ShoppingCartDaoImpl(SessionFactory sessionFactory) {
@@ -26,16 +25,16 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
     public ShoppingCart add(ShoppingCart shoppingCart) {
         Transaction transaction = null;
         Session session = null;
-        logger.info("Creating shopping cart: " + shoppingCart);
+        log.info("Creating shopping cart: " + shoppingCart);
         try {
             session = sessionFactory.openSession();
             transaction = session.beginTransaction();
             session.save(shoppingCart);
             transaction.commit();
-            logger.info("Shopping cart was created: " + shoppingCart);
+            log.info("Shopping cart was created: " + shoppingCart);
             return shoppingCart;
         } catch (Exception e) {
-            logger.error("Can't create shopping cart: " + shoppingCart + "\nerror: ", e);
+            log.error("Can't create shopping cart: " + shoppingCart + "\nerror: ", e);
             if (transaction != null) {
                 transaction.rollback();
             }
@@ -63,15 +62,15 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
     public void update(ShoppingCart shoppingCart) {
         Transaction transaction = null;
         Session session = null;
-        logger.info("Updating shopping cart: " + shoppingCart);
+        log.info("Updating shopping cart: " + shoppingCart);
         try {
             session = sessionFactory.openSession();
             transaction = session.beginTransaction();
             session.update(shoppingCart);
             transaction.commit();
-            logger.info("Shopping cart was updated: " + shoppingCart);
+            log.info("Shopping cart was updated: " + shoppingCart);
         } catch (Exception e) {
-            logger.error("Can't update shopping cart: " + shoppingCart + "\nerror: ", e);
+            log.error("Can't update shopping cart: " + shoppingCart + "\nerror: ", e);
             if (transaction != null) {
                 transaction.rollback();
             }

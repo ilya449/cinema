@@ -4,7 +4,6 @@ import com.cinema.dao.UserDao;
 import com.cinema.model.User;
 import com.cinema.service.UserService;
 import com.cinema.util.HashUtil;
-import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -23,7 +22,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> findByEmail(String email) {
+    public User findByEmail(String email) {
         return userDao.findByEmail(email);
+    }
+
+    @Override
+    public User get(Long id) {
+        return userDao.get(id);
     }
 }

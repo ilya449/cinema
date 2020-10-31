@@ -31,7 +31,7 @@ public class OrderController {
         this.mapper = mapper;
     }
 
-    @PostMapping
+    @PostMapping("/complete")
     public void completeOrder(@RequestBody Long userId) {
         User user = userService.get(userId);
         orderService.completeOrder(shoppingCartService.getByUser(user).getTickets(), user);
